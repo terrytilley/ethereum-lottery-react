@@ -18,6 +18,7 @@ module.exports = {
         specialLink: ["to"]
       }
     ],
+    "jsx-a11y/label-has-for": [0],
     "prettier/prettier": [
       "error",
       {
