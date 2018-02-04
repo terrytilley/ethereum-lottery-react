@@ -4,7 +4,7 @@ import lottery from './lottery';
 import './App.css';
 
 class App extends Component {
-  state = { manager: '', players: [], balance: '', value: '' };
+  state = { manager: '', players: [], balance: '', value: '', message: '' };
 
   async componentDidMount() {
     const manager = await lottery.methods.manager().call();
@@ -20,14 +20,18 @@ class App extends Component {
     const { value } = this.state;
     const accounts = await web3.eth.getAccounts();
 
+    this.setState({ message: 'Waiting on transaction success...' });
+
     await lottery.methods.enter().send({
       from: accounts[0],
       value: web3.utils.toWei(value, 'ether'),
     });
+
+    this.setState({ message: 'You have been entered!' });
   };
 
   render() {
-    const { manager, players, balance, value } = this.state;
+    const { manager, players, balance, value, message } = this.state;
     const pot = web3.utils.fromWei(balance, 'ether');
 
     return (
@@ -51,6 +55,10 @@ class App extends Component {
             <input type="submit" value="Enter" />
           </div>
         </form>
+
+        <hr />
+
+        <h2>{message}</h2>
       </div>
     );
   }
